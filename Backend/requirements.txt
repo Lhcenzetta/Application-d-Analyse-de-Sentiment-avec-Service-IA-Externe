@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+sqlalchemy
+requests
+pyjwt
+python-multipart
+
+python-dotenv
+pytest

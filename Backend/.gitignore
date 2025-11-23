@@ -1,0 +1,17 @@
+# Ignore environment files containing secrets
+.env
+.env.*
+
+# Python cache and virtual envs
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.db
+venv/
+.venv/
+
+# OS files
+.DS_Store
+
+# pytest cache
+.pytest_cache/
