@@ -18,11 +18,6 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-
-app = FastAPI()
-
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
