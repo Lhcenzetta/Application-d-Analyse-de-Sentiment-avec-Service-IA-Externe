@@ -6,59 +6,56 @@ import Link from "next/link";
 const HomePage = () => {
   return (
     <div className="page">
+      {/* TOP NAV BAR */}
       <header className="navbar">
         <div className="brand">
           <span className="brand-mark">SA</span>
           <span className="brand-name">Sentiment Analysis</span>
         </div>
+
         <nav className="nav-links">
           <Link href="/login">Login</Link>
           <Link href="/registre" className="nav-cta">Get Started</Link>
         </nav>
       </header>
 
+      {/* MAIN CONTENT GRID */}
       <main className="layout">
-        {/* LEFT – HERO / PROJECT DESCRIPTION */}
+        {/* LEFT – HERO */}
         <section className="hero">
           <h1 className="hero-title">
-            Understand the tone of your text,
-            <span className="hero-highlight"> instantly.</span>
+            Analyze text sentiment with
+            <span className="hero-highlight"> clarity & simplicity.</span>
           </h1>
 
           <p className="hero-subtitle">
-            An AI-powered sentiment analysis platform built with FastAPI, JWT-secured APIs,
-            and a clean Next.js interface.
+            A modern and secure AI-powered platform built with FastAPI, Hugging Face,
+            and Next.js to instantly detect emotion in your text.
           </p>
 
           <p className="hero-text">
-            This project is part of the <strong>Simplon</strong> network. It uses the
-            Hugging Face model <strong>nlptown/bert-base-multilingual-uncased-sentiment</strong>{" "}
-            to score text from <strong>1 to 5</strong> and returns a clear sentiment label.
-            The whole stack is containerized with <strong>Docker</strong> and ready for
-            production deployment.
+            This project uses the multilingual model 
+            <strong> nlptown/bert-base-multilingual-uncased-sentiment </strong>
+            to return a score from <strong>1 to 5</strong>.  
+            Fully secured (JWT), containerized (Docker), and designed with a clean UX philosophy.
           </p>
 
           <details className="details">
-            <summary>See more technical details</summary>
+            <summary>More technical info</summary>
             <p>
-              A secure <strong>FastAPI</strong> backend exposes JWT-protected endpoints that
-              forward text to the Hugging Face inference API. The result is normalized into a
-              simple JSON structure. A <strong>Next.js</strong> frontend consumes this API to
-              provide a smooth, responsive user experience.
+              FastAPI receives the request, checks authentication (JWT), and sends the
+              text payload to Hugging Face inference API. Results are normalized and returned
+              instantly. Frontend is lightweight, responsive, and production-ready.
             </p>
           </details>
 
           <div className="hero-actions">
-            <Link href="/login" className="btn primary">
-              Login
-            </Link>
-            <Link href="/registre" className="btn secondary">
-              Register
-            </Link>
+            <Link href="/login" className="btn primary">Login</Link>
+            <Link href="/registre" className="btn secondary">Register</Link>
           </div>
         </section>
 
-        {/* RIGHT – PROFILE / WHO AM I */}
+        {/* RIGHT – PROFILE */}
         <aside className="side">
           <section className="card profile-card">
             <div className="avatar-row">
@@ -70,9 +67,8 @@ const HomePage = () => {
             </div>
 
             <p className="profile-text">
-              I design and build applications that combine <strong>clean backend
-              architecture</strong>, <strong>modern frontends</strong>, and
-              <strong> machine learning</strong> to solve real-world problems.
+              I create solutions that mix scalable backend systems, clean frontends,
+              and machine learning to solve real-world problems with elegance.
             </p>
 
             <div className="tags">
@@ -86,34 +82,51 @@ const HomePage = () => {
           <section className="card stack-card">
             <h3 className="card-title">Tech Stack</h3>
             <ul className="stack-list">
-              <li>⚙️ FastAPI with JWT authentication</li>
-              <li>📦 Dockerized services (backend & frontend)</li>
-              <li>🧠 Hugging Face sentiment model (1–5 stars)</li>
-              <li>🖥️ Next.js frontend with clean UX</li>
+              <li>⚙️ FastAPI (JWT authentication)</li>
+              <li>📦 Docker containerization</li>
+              <li>🧠 Hugging Face Sentiment Model</li>
+              <li>🖥️ Next.js modern UI</li>
             </ul>
           </section>
         </aside>
       </main>
 
-      <style jsx>{`
-        :root {
-          color-scheme: light;
-        }
+      {/* IMAGE SHOWCASE SECTION */}
+      <section className="image-section">
+        <h2 className="image-title">Project Showcase</h2>
+        <p className="image-subtitle">
+          Screenshot of the sentiment analysis interface built with Next.js.
+        </p>
 
+        <div className="image-wrapper">
+          <img
+            src="/Users/lait-zet/Desktop/The Briefs/Application-d-Analyse-de-Sentiment-avec-Service-IA-Externe/frontend/public/image.png" 
+            alt="Sentiment Analysis App"
+            className="project-image"
+          />
+        </div>
+      </section>
+
+      <footer className="footer">
+        <p>© {new Date().getFullYear()} Sentiment Analysis — All rights reserved.</p>
+      </footer>
+
+      <style jsx>{`
         .page {
           min-height: 100vh;
           background: #f5f5f7;
           font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
             "Segoe UI", sans-serif;
-          padding: 24px 32px 40px;
+          padding: 24px 32px 60px;
           color: #0f172a;
         }
 
+        /* NAVBAR */
         .navbar {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 32px;
+          margin-bottom: 40px;
         }
 
         .brand {
@@ -123,22 +136,20 @@ const HomePage = () => {
         }
 
         .brand-mark {
-          width: 32px;
-          height: 32px;
+          width: 36px;
+          height: 36px;
           border-radius: 10px;
           background: #111827;
           color: white;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 0.8rem;
           font-weight: 700;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
 
         .brand-name {
           font-weight: 600;
-          letter-spacing: 0.03em;
-          font-size: 0.95rem;
+          font-size: 1rem;
           color: #111827;
         }
 
@@ -146,16 +157,12 @@ const HomePage = () => {
           display: flex;
           align-items: center;
           gap: 18px;
-          font-size: 0.9rem;
         }
 
         .nav-links a {
           text-decoration: none;
           color: #4b5563;
-        }
-
-        .nav-links a:hover {
-          color: #111827;
+          font-size: 0.9rem;
         }
 
         .nav-cta {
@@ -166,227 +173,151 @@ const HomePage = () => {
           font-weight: 500;
         }
 
+        /* LAYOUT GRID */
         .layout {
           display: grid;
-          grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
-          gap: 32px;
-          align-items: flex-start;
+          grid-template-columns: 1.6fr 1fr;
+          gap: 40px;
+          margin-bottom: 60px;
         }
 
+        /* HERO */
         .hero {
           background: #ffffff;
-          border-radius: 24px;
-          padding: 28px 28px 30px;
-          box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+          padding: 40px;
+          border-radius: 28px;
+          box-shadow: 0 20px 50px rgba(15,23,42,0.08);
           border: 1px solid #e5e7eb;
         }
 
         .hero-title {
-          font-size: 2.4rem;
+          font-size: 2.8rem;
           font-weight: 750;
-          letter-spacing: -0.04em;
-          margin-bottom: 10px;
-          color: #0b1120;
+          margin-bottom: 12px;
+          letter-spacing: -0.03em;
         }
 
         .hero-highlight {
-          display: inline;
           color: #2563eb;
         }
 
         .hero-subtitle {
-          font-size: 1rem;
           color: #4b5563;
-          margin-bottom: 16px;
+          font-size: 1.1rem;
+          margin-bottom: 20px;
+          line-height: 1.4;
         }
 
         .hero-text {
-          font-size: 0.95rem;
           color: #4b5563;
-          line-height: 1.6;
-          margin-bottom: 10px;
-        }
-
-        .details {
-          margin-top: 8px;
-          font-size: 0.9rem;
-          color: #4b5563;
+          line-height: 1.7;
+          margin-bottom: 15px;
+          font-size: 1rem;
         }
 
         .details summary {
           cursor: pointer;
           color: #2563eb;
-          list-style: none;
-        }
-
-        .details summary::-webkit-details-marker {
-          display: none;
-        }
-
-        .details p {
-          margin-top: 6px;
-          color: #6b7280;
+          font-size: 0.95rem;
         }
 
         .hero-actions {
-          margin-top: 24px;
+          margin-top: 28px;
           display: flex;
-          gap: 12px;
-          flex-wrap: wrap;
-        }
-
-        .btn {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          padding: 10px 22px;
-          border-radius: 999px;
-          font-size: 0.95rem;
-          font-weight: 500;
-          text-decoration: none;
-          border: 1px solid transparent;
-          transition: transform 0.12s ease, box-shadow 0.12s ease,
-            background-color 0.12s ease, color 0.12s ease;
-        }
-
-        .btn.primary {
-          background: #111827;
-          color: #ffffff;
-          box-shadow: 0 14px 30px rgba(15, 23, 42, 0.35);
-        }
-
-        .btn.primary:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 18px 40px rgba(15, 23, 42, 0.45);
-        }
-
-        .btn.secondary {
-          background: #ffffff;
-          color: #111827;
-          border-color: #d1d5db;
-        }
-
-        .btn.secondary:hover {
-          background: #f9fafb;
-        }
-
-        .side {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-
-        .card {
-          background: #ffffff;
-          border-radius: 20px;
-          padding: 20px 20px 22px;
-          box-shadow: 0 16px 35px rgba(15, 23, 42, 0.06);
-          border: 1px solid #e5e7eb;
-        }
-
-        .profile-card {
-          display: flex;
-          flex-direction: column;
           gap: 14px;
         }
 
-        .avatar-row {
+        /* BUTTONS */
+        .btn {
+          padding: 12px 28px;
+          border-radius: 999px;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 1rem;
+        }
+
+        .primary {
+          background: #111827;
+          color: white;
+        }
+
+        .secondary {
+          background: white;
+          color: #111827;
+          border: 1px solid #d1d5db;
+        }
+
+        /* SIDE PROFILE SECTION */
+        .side {
           display: flex;
-          align-items: center;
-          gap: 12px;
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .card {
+          background: white;
+          padding: 28px;
+          border-radius: 22px;
+          border: 1px solid #e5e7eb;
+          box-shadow: 0 18px 45px rgba(0,0,0,0.05);
         }
 
         .avatar-circle {
-          width: 44px;
-          height: 44px;
-          border-radius: 999px;
+          width: 48px;
+          height: 48px;
           background: #111827;
           color: white;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 600;
-          font-size: 0.9rem;
-        }
-
-        .profile-name {
-          margin: 0;
-          font-size: 1rem;
-          font-weight: 600;
-          color: #111827;
-        }
-
-        .profile-role {
-          margin: 2px 0 0;
-          font-size: 0.85rem;
-          color: #6b7280;
-        }
-
-        .profile-text {
-          font-size: 0.92rem;
-          color: #4b5563;
-          line-height: 1.6;
-        }
-
-        .tags {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
-        }
-
-        .tags span {
-          font-size: 0.8rem;
-          padding: 4px 10px;
           border-radius: 999px;
-          background: #f3f4f6;
-          color: #374151;
-        }
-
-        .stack-card {
-          font-size: 0.9rem;
-          color: #4b5563;
-        }
-
-        .card-title {
-          margin: 0 0 8px;
-          font-size: 0.95rem;
           font-weight: 600;
-          color: #111827;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
 
-        .stack-list {
-          list-style: none;
-          padding-left: 0;
-          margin: 0;
+        /* IMAGE SHOWCASE */
+        .image-section {
+          text-align: center;
+          margin-top: 40px;
         }
 
-        .stack-list li {
-          margin-bottom: 6px;
+        .image-title {
+          font-size: 2rem;
+          font-weight: 700;
+          margin-bottom: 4px;
+        }
+
+        .image-subtitle {
+          color: #6b7280;
+          margin-bottom: 24px;
+          font-size: 0.95rem;
+        }
+
+        .image-wrapper {
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 0 20px;
+        }
+
+        .project-image {
+          width: 100%;
+          border-radius: 20px;
+          box-shadow: 
+            0 10px 25px rgba(0,0,0,0.08),
+            0 4px 15px rgba(0,0,0,0.06);
+          border: 1px solid #e5e7eb;
+        }
+
+        /* FOOTER */
+        .footer {
+          text-align: center;
+          margin-top: 50px;
+          color: #6b7280;
+          font-size: 0.85rem;
         }
 
         @media (max-width: 900px) {
           .layout {
-            grid-template-columns: minmax(0, 1fr);
-          }
-        }
-
-        @media (max-width: 640px) {
-          .page {
-            padding: 16px 16px 24px;
-          }
-
-          .hero {
-            padding: 22px 18px;
-          }
-
-          .hero-title {
-            font-size: 2rem;
-          }
-
-          .navbar {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 10px;
+            grid-template-columns: 1fr;
           }
         }
       `}</style>

@@ -4,6 +4,7 @@ sqlalchemy
 requests
 pyjwt
 python-jose
+httpx
 python-multipart
 
 python-dotenv
