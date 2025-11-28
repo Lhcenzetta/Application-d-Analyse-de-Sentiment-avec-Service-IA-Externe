@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-import jwt
+from jose import jwt
 import os
 from sqlalchemy.orm import Session
 
@@ -11,7 +11,6 @@ import schema
 from Model import query  
 router = APIRouter(
     prefix="/auth",
-    tags=["auth"],
 )
 
 security = HTTPBearer()

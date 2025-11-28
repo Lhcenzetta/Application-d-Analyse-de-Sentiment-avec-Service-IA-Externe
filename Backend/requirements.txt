@@ -3,6 +3,7 @@ uvicorn
 sqlalchemy
 requests
 pyjwt
+python-jose
 python-multipart
 
 python-dotenv
