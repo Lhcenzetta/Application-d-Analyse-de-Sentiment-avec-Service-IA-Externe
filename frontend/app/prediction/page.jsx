@@ -46,7 +46,7 @@ export default function Predict() {
 
     const token_access = localStorage.getItem("token");
 
-    const response = await fetch("http://127.0.0.1:8000/auth/predict", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/predict`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
