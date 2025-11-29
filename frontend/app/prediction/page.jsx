@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Predict() {
@@ -28,13 +28,11 @@ export default function Predict() {
     if (!hasToken) router.push("/login");
   }, [hasToken, router]);
 
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     setHasToken(false);
     router.push("/login");
   };
-
 
   const clearHistory = () => {
     localStorage.removeItem("history");
@@ -75,14 +73,12 @@ export default function Predict() {
     });
   };
 
-
   const getColor = (sentiment) => {
     if (!sentiment) return "#333";
     if (sentiment.toLowerCase().includes("positive")) return "#22c55e";
     if (sentiment.toLowerCase().includes("negative")) return "#ef4444";
     return "#3b82f6";
   };
-
 
   const exampleIdeas = [
     "I really love this product!",
@@ -92,7 +88,6 @@ export default function Predict() {
     "The experience was okay, but could be better.",
   ];
 
-  
   if (hasToken === null) {
     return (
       <div className="page">
@@ -122,13 +117,12 @@ export default function Predict() {
         </button>
 
         <button className="btn-floating clear" onClick={clearHistory}>
-          🗑 Clear History
+          🗑 Clear
         </button>
       </div>
 
       {/* MAIN CONTENT */}
       <div className="content">
-
         {/* LEFT CARD */}
         <div className="card">
           <h1 className="title">Sentiment Analyzer</h1>
@@ -151,13 +145,12 @@ export default function Predict() {
               onChange={(e) => setText(e.target.value)}
               rows="5"
               className="textarea"
-              placeholder="Type a sentence..."
+              placeholder="Type something..."
             ></textarea>
 
             <button type="submit" className="btn">Analyze</button>
           </form>
 
-          {/* LOADING */}
           {loading && (
             <div className="loading-box">
               <div className="spinner"></div>
@@ -165,7 +158,6 @@ export default function Predict() {
             </div>
           )}
 
-          {/* RESULT */}
           {data && !loading && (
             <div className="result-box">
               <h2>Prediction Result</h2>
@@ -190,15 +182,14 @@ export default function Predict() {
                 <p>
                   <strong style={{ color: getColor(entry.sentiment) }}>
                     {entry.sentiment}
-                  </strong>
-                  {" "}– Score: {entry.prediction}
+                  </strong>{" "}
+                  – Score: {entry.prediction}
                 </p>
                 <span className="date">{entry.date}</span>
               </div>
             ))}
           </div>
         </div>
-
       </div>
 
       {/* STYLES */}
@@ -212,7 +203,7 @@ export default function Predict() {
           align-items: center;
         }
 
-        /* FLOATING BUTTONS */
+        /* --- FLOATING BUTTONS --- */
         .floating-buttons {
           position: fixed;
           bottom: 30px;
@@ -239,17 +230,11 @@ export default function Predict() {
           transform: scale(1.05);
         }
 
-        .logout {
-          background: linear-gradient(135deg, #ef4444, #b91c1c);
-        }
-        .ideas {
-          background: linear-gradient(135deg, #2563eb, #1e40af);
-        }
-        .clear {
-          background: linear-gradient(135deg, #7c3aed, #581c87);
-        }
+        .logout { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+        .ideas { background: linear-gradient(135deg, #2563eb, #1e40af); }
+        .clear { background: linear-gradient(135deg, #7c3aed, #581c87); }
 
-        /* LAYOUT */
+        /* --- LAYOUT --- */
         .content {
           display: flex;
           gap: 30px;
@@ -271,7 +256,14 @@ export default function Predict() {
           font-weight: 750;
         }
 
-        /* IDEAS */
+        .subtitle {
+          text-align: center;
+          color: #6b7280;
+          margin-top: 6px;
+          margin-bottom: 14px;
+        }
+
+        /* --- IDEAS --- */
         .idea-box {
           background: #eef2ff;
           padding: 15px;
@@ -325,7 +317,7 @@ export default function Predict() {
           to { transform: rotate(360deg); }
         }
 
-        /* SIDEBAR */
+        /* --- SIDEBAR --- */
         .sidebar {
           width: 300px;
           background: white;
@@ -346,3 +338,4 @@ export default function Predict() {
     </div>
   );
 }
+

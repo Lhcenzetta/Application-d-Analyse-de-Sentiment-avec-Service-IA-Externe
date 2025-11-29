@@ -77,6 +77,8 @@ const HomePage = () => {
               <span>FastAPI</span>
               <span>Next.js</span>
               <span>Docker</span>
+              <span>Python</span>
+              <span>postgres</span>
               <span>Hugging Face</span>
             </div>
 
