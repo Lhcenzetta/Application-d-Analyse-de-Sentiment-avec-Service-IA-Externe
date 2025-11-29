@@ -1,163 +1,347 @@
-"use client"
+"use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Predict() {
+  const router = useRouter();
+
+  const [hasToken, setHasToken] = useState(() => {
+    if (typeof window === "undefined") return null;
+    return Boolean(localStorage.getItem("token"));
+  });
   const [text, setText] = useState("");
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      return JSON.parse(localStorage.getItem("history") || "[]");
+    } catch {
+      return [];
+    }
+  });
+  const [showIdeas, setShowIdeas] = useState(false);
+
+  useEffect(() => {
+    if (hasToken === null) return;
+    if (!hasToken) router.push("/login");
+  }, [hasToken, router]);
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setHasToken(false);
+    router.push("/login");
+  };
+
+
+  const clearHistory = () => {
+    localStorage.removeItem("history");
+    setHistory([]);
+  };
 
   const handle_text = async (e) => {
     e.preventDefault();
-    const token_access = localStorage.getItem('token');
+    setLoading(true);
+    setData(null);
 
-    const response = await fetch('http://127.0.0.1:8000/auth/predict', {
-      method: 'POST',
+    const token_access = localStorage.getItem("token");
+
+    const response = await fetch("http://127.0.0.1:8000/auth/predict", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        "Authorization": `Bearer ${token_access}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token_access}`,
       },
-      body: JSON.stringify({ text })
+      body: JSON.stringify({ text }),
     });
 
-    const data = await response.json();
-    console.log(data);
-    setData(data);
+    const result = await response.json();
+    setData(result);
+    setLoading(false);
+
+    const entry = {
+      input: text,
+      prediction: result.prediction,
+      sentiment: result.sentiment,
+      date: new Date().toLocaleString(),
+    };
+
+    setHistory((prevHistory) => {
+      const updatedHistory = [entry, ...prevHistory];
+      localStorage.setItem("history", JSON.stringify(updatedHistory));
+      return updatedHistory;
+    });
   };
 
+
+  const getColor = (sentiment) => {
+    if (!sentiment) return "#333";
+    if (sentiment.toLowerCase().includes("positive")) return "#22c55e";
+    if (sentiment.toLowerCase().includes("negative")) return "#ef4444";
+    return "#3b82f6";
+  };
+
+
+  const exampleIdeas = [
+    "I really love this product!",
+    "This is the worst service I've ever seen.",
+    "I'm not sure how I feel about this.",
+    "I feel happy today.",
+    "The experience was okay, but could be better.",
+  ];
+
+  
+  if (hasToken === null) {
+    return (
+      <div className="page">
+        <h1 style={{ marginTop: "80px" }}>Checking authentication...</h1>
+      </div>
+    );
+  }
+
+  if (!hasToken) {
+    return (
+      <div className="page">
+        <h1 style={{ marginTop: "80px" }}>Redirecting to login...</h1>
+      </div>
+    );
+  }
+
   return (
-    <div className="predict-container">
-      <form onSubmit={handle_text} className="predict-form">
-        <h1>Enter your message :</h1>
+    <div className="page">
+      {/* FLOATING BUTTONS */}
+      <div className="floating-buttons">
+        <button className="btn-floating logout" onClick={handleLogout}>
+          🚪 Logout
+        </button>
 
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          rows="5"
-          cols="50"
-          className="predict-textarea"
-          placeholder="Type your message here to analyze its sentiment..."
-        ></textarea>
+        <button className="btn-floating ideas" onClick={() => setShowIdeas(!showIdeas)}>
+          💡 Ideas
+        </button>
 
-        <br />
+        <button className="btn-floating clear" onClick={clearHistory}>
+          🗑 Clear History
+        </button>
+      </div>
 
-        <button type="submit" className="predict-btn">Send</button>
-      </form>
+      {/* MAIN CONTENT */}
+      <div className="content">
 
-      {/* ------- DISPLAY RESULT HERE ------- */}
-      {data && (
-        <div className="result-box">
-          <h2>Prediction Result</h2>
-          <p><strong>Prediction score:</strong> {data.prediction}</p>
-          <p><strong>Sentiment:</strong> {data.sentiment}</p>
+        {/* LEFT CARD */}
+        <div className="card">
+          <h1 className="title">Sentiment Analyzer</h1>
+          <p className="subtitle">Analyze emotions behind text instantly</p>
+
+          {/* IDEAS PANEL */}
+          {showIdeas && (
+            <div className="idea-box">
+              {exampleIdeas.map((item, i) => (
+                <p key={i} className="idea-item" onClick={() => setText(item)}>
+                  {item}
+                </p>
+              ))}
+            </div>
+          )}
+
+          <form onSubmit={handle_text} className="form">
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              rows="5"
+              className="textarea"
+              placeholder="Type a sentence..."
+            ></textarea>
+
+            <button type="submit" className="btn">Analyze</button>
+          </form>
+
+          {/* LOADING */}
+          {loading && (
+            <div className="loading-box">
+              <div className="spinner"></div>
+              <p>Analyzing sentiment...</p>
+            </div>
+          )}
+
+          {/* RESULT */}
+          {data && !loading && (
+            <div className="result-box">
+              <h2>Prediction Result</h2>
+              <p><strong>Score:</strong> {data.prediction}</p>
+              <p style={{ color: getColor(data.sentiment), fontWeight: "700" }}>
+                <strong>Sentiment:</strong> {data.sentiment}
+              </p>
+            </div>
+          )}
         </div>
-      )}
 
+        {/* SIDEBAR */}
+        <div className="sidebar">
+          <h2>History</h2>
+
+          <div className="history-list">
+            {history.length === 0 && <p>No predictions yet.</p>}
+
+            {history.map((entry, index) => (
+              <div key={index} className="history-item">
+                <p>“{entry.input.substring(0, 40)}...”</p>
+                <p>
+                  <strong style={{ color: getColor(entry.sentiment) }}>
+                    {entry.sentiment}
+                  </strong>
+                  {" "}– Score: {entry.prediction}
+                </p>
+                <span className="date">{entry.date}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      {/* STYLES */}
       <style jsx>{`
-        .predict-container {
+        .page {
           min-height: 100vh;
+          background: #f5f5f7;
+          padding: 20px;
           display: flex;
           flex-direction: column;
-          justify-content: center;
           align-items: center;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          padding: 20px;
         }
 
-        .predict-form {
+        /* FLOATING BUTTONS */
+        .floating-buttons {
+          position: fixed;
+          bottom: 30px;
+          right: 30px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          z-index: 999;
+        }
+
+        .btn-floating {
+          padding: 12px 20px;
+          border: none;
+          border-radius: 50px;
+          color: white;
+          font-weight: 700;
+          backdrop-filter: blur(10px);
+          cursor: pointer;
+          box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+          transition: transform 0.25s ease;
+        }
+
+        .btn-floating:hover {
+          transform: scale(1.05);
+        }
+
+        .logout {
+          background: linear-gradient(135deg, #ef4444, #b91c1c);
+        }
+        .ideas {
+          background: linear-gradient(135deg, #2563eb, #1e40af);
+        }
+        .clear {
+          background: linear-gradient(135deg, #7c3aed, #581c87);
+        }
+
+        /* LAYOUT */
+        .content {
+          display: flex;
+          gap: 30px;
           width: 100%;
-          max-width: 600px;
+          max-width: 1200px;
+        }
+
+        .card {
+          flex: 1;
           background: white;
           padding: 40px;
-          border-radius: 16px;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
+          border-radius: 22px;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
 
-        h1 {
+        .title {
           text-align: center;
-          color: #2d3748;
-          font-size: 1.8rem;
-          margin-bottom: 10px;
+          font-size: 2rem;
+          font-weight: 750;
         }
 
-        .predict-textarea {
+        /* IDEAS */
+        .idea-box {
+          background: #eef2ff;
+          padding: 15px;
+          border-radius: 12px;
+          margin-bottom: 15px;
+        }
+
+        .idea-item {
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          background: white;
+          margin-bottom: 8px;
+          cursor: pointer;
+        }
+
+        .idea-item:hover {
+          background: #dbeafe;
+        }
+
+        textarea {
           width: 100%;
           padding: 15px;
-          border: 2px solid #e2e8f0;
-          border-radius: 10px;
-          font-size: 15px;
-          font-family: inherit;
-          resize: vertical;
-          transition: all 0.3s ease;
-          line-height: 1.5;
-        }
-
-        .predict-textarea:focus {
-          border-color: #667eea;
-          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-          outline: none;
-        }
-
-        .predict-btn {
-          width: 100%;
-          padding: 14px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          font-size: 16px;
-          font-weight: 600;
-          border: none;
-          border-radius: 10px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .predict-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .predict-btn:active {
-          transform: translateY(0);
-        }
-
-        .result-box {
-          margin-top: 30px;
-          background: #f7fafc;
-          padding: 20px;
           border-radius: 12px;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-          text-align: center;
-          width: 100%;
-          max-width: 600px;
+          border: 1px solid #ddd;
+          background: #fafafa;
+          margin-top: 10px;
         }
 
-        .result-box h2 {
+        .btn {
+          margin-top: 15px;
+          padding: 14px;
+          border: none;
+          border-radius: 12px;
+          background: #111827;
+          color: white;
+          font-weight: 600;
+        }
+
+        .spinner {
+          width: 30px;
+          height: 30px;
+          border: 4px solid #ddd;
+          border-top-color: #111827;
+          border-radius: 50%;
+          animation: spin 0.7s linear infinite;
+          margin: auto;
+        }
+
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+          width: 300px;
+          background: white;
+          padding: 30px;
+          border-radius: 22px;
+          height: 550px;
+          overflow-y: auto;
+        }
+
+        .history-item {
+          background: #fafafa;
+          padding: 12px;
+          border-radius: 12px;
           margin-bottom: 10px;
-          color: #2d3748;
         }
 
-        .result-box p {
-          font-size: 16px;
-          color: #4a5568;
-        }
-
-        @media (max-width: 768px) {
-          .predict-form {
-            padding: 30px 20px;
-          }
-
-          h1 {
-            font-size: 1.5rem;
-          }
-
-          .predict-textarea {
-            font-size: 14px;
-          }
-        }
       `}</style>
     </div>
   );

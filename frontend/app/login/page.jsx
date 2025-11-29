@@ -1,165 +1,205 @@
-"use client"
-import Link from 'next/link';
-import { useRouter } from 'next/navigation'
-import { useState } from 'react';
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const Login = () => {
-    const router = useRouter()
-    const [username , setUsername] = useState("")
-    const [password , setPassword] = useState("")
-    const [error, setError] = useState("")
+  const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-    const get_info = async (e) => {
-        e.preventDefault()
-        setError("") // reset error
+  const get_info = async (e) => {
+    e.preventDefault();
+    setError("");
 
-        const response = await fetch('http://127.0.0.1:8000/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password})
-        });
+    const response = await fetch("http://127.0.0.1:8000/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
 
-        const data = await response.json()
+    const data = await response.json();
 
-        if (data.access_token){
-            localStorage.setItem('token', data.access_token)
-            router.push('/prediction')
-        }
-        else {
-            setError("❌ Incorrect username or password");
-        }
+    if (data.access_token) {
+      localStorage.setItem("token", data.access_token);
+      router.push("/prediction");
+    } else {
+      setError("Incorrect username or password.");
     }
+  };
 
-    return (
-        <div className="container">
-            <form className="card" onSubmit={get_info}>
-                <h1>Login</h1>
+  return (
+    <div className="page">
+      <div className="card">
+        <h1 className="title">Welcome Back</h1>
+        <p className="subtitle">Log in to access your dashboard</p>
 
-                <label>Username</label>
-                <input 
-                    type="text"
-                    placeholder="Enter your username"
-                    value={username}
-                    onChange={(e)=>setUsername(e.target.value)}
-                />
+        <form onSubmit={get_info} className="form">
+          <label>Username</label>
+          <input
+            type="text"
+            placeholder="Enter your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-                <label>Password</label>
-                <input 
-                    type="password"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e)=>setPassword(e.target.value)}
-                />
+          <label>Password</label>
+          <input
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-                <button type='submit'>Validate</button>
+          <button type="submit">Login</button>
 
-                {/* 🔥 Error message */}
-                {error && <p className="error">{error}</p>}
+          {error && <p className="error">{error}</p>}
+        </form>
 
-                <p className="bottom-text">
-                    Don't have an account? 
-                    <Link href="/registre"> Register here</Link>
-                </p>
-            </form>
-            <style jsx>{`
-                .container {
-                    min-height: 100vh;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    background: #f5f7fa;
-                    padding: 20px;
-                }
+        <p className="bottom-text">
+          Don&apos;t have an account?
+          <Link href="/registre"> Register here</Link>
+        </p>
+      </div>
 
-                .card {
-                    width: 100%;
-                    max-width: 400px;
-                    background: white;
-                    padding: 30px;
-                    border-radius: 12px;
-                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                    display: flex;
-                    flex-direction: column;
-                    gap: 15px;
-                }
+      <style jsx>{`
+        .page {
+          min-height: 100vh;
+          background: #f5f5f7;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 20px;
+          animation: fadeIn 0.6s ease;
+        }
 
-                h1 {
-                    text-align: center;
-                    color: #333;
-                }
+        .card {
+          width: 100%;
+          max-width: 420px;
+          background: white;
+          padding: 40px;
+          border-radius: 22px;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+          border: 1px solid #e5e7eb;
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+          animation: slideUp 0.6s ease;
+        }
 
-                label {
-                    font-weight: 500;
-                    margin-top: 5px;
-                    color: #444;
-                }
+        .title {
+          font-size: 2rem;
+          font-weight: 750;
+          text-align: center;
+          color: #111827;
+        }
 
-                input {
-                    width: 100%;
-                    padding: 12px;
-                    border: 1px solid #ccc;
-                    border-radius: 8px;
-                    font-size: 15px;
-                    transition: 0.2s;
-                }
+        .subtitle {
+          text-align: center;
+          margin-top: -8px;
+          color: #6b7280;
+          font-size: 0.95rem;
+        }
 
-                input:focus {
-                    border-color: #4a90e2;
-                    box-shadow: 0 0 5px rgba(74,144,226,0.3);
-                    outline: none;
-                }
+        label {
+          font-size: 0.9rem;
+          font-weight: 500;
+          color: #374151;
+        }
 
-                button {
-                    width: 100%;
-                    padding: 12px;
-                    background: #4a90e2;
-                    color: white;
-                    font-size: 16px;
-                    font-weight: 600;
-                    border: none;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    transition: 0.3s;
-                    margin-top: 10px;
-                }
+        input {
+          width: 100%;
+          padding: 12px;
+          font-size: 15px;
+          border: 1px solid #d1d5db;
+          border-radius: 10px;
+          transition: 0.2s;
+          background: #f9fafb;
+        }
 
-                button:hover {
-                    background: #3779c6;
-                }
+        input:focus {
+          border-color: #2563eb;
+          background: white;
+          box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+          outline: none;
+        }
 
-                .error {
-                    margin-top: 10px;
-                    color: #e63946;
-                    background: #ffe5e8;
-                    padding: 10px;
-                    border-radius: 8px;
-                    text-align: center;
-                    font-weight: 600;
-                    border: 1px solid #e63946;
-                }
+        button {
+          width: 100%;
+          padding: 12px;
+          margin-top: 10px;
+          background: #111827;
+          color: white;
+          font-size: 1rem;
+          font-weight: 600;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: 0.2s ease;
+          box-shadow: 0 10px 24px rgba(17, 24, 39, 0.2);
+        }
 
-                .bottom-text {
-                    text-align: center;
-                    font-size: 14px;
-                    margin-top: 10px;
-                }
+        button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 16px 28px rgba(17, 24, 39, 0.3);
+        }
 
-                a {
-                    color: #4a90e2;
-                    font-weight: 600;
-                    margin-left: 5px;
-                }
+        .error {
+          background: #fde2e4;
+          color: #b91c1c;
+          font-weight: 600;
+          border-radius: 10px;
+          padding: 10px;
+          text-align: center;
+          border: 1px solid #fecaca;
+          margin-top: 10px;
+        }
 
-                @media (max-width: 480px) {
-                    .card {
-                        padding: 20px;
-                    }
-                }
-            `}</style>
-        </div>
-    )
-}
+        .bottom-text {
+          text-align: center;
+          margin-top: 10px;
+          color: #374151;
+          font-size: 0.9rem;
+        }
+
+        .bottom-text a {
+          color: #2563eb;
+          margin-left: 5px;
+          font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+          .card {
+            padding: 28px;
+          }
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: scale(0.98);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes slideUp {
+          from {
+            transform: translateY(18px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
 
 export default Login;

@@ -1,164 +1,213 @@
-'use client'
-import Link from 'next/link';
-import React from 'react'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-const page = () => {
-    const router = useRouter()
-    const [username , setUsername] = useState("")
-    const [password , setPassword] = useState("")
+"use client";
 
-    const Register = (e) => {
-        e.preventDefault()
-        const response = fetch('http://127.0.0.1:8000/auth/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password})
-        });
-        router.push('/login')
+import Link from "next/link";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
+export default function RegisterPage() {
+  const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const Register = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response.ok) {
+        setError("Unable to register. Try a different username.");
+        return;
+      }
+
+      router.push("/login");
+    } catch (err) {
+      console.error("Register request failed", err);
+      setError("Server error. Please try again later.");
     }
-    return (
-    <div className="register-container">
-        <form onSubmit={Register} className="register-form">
-                <h1>Register</h1>
-                <label>Username</label>
-                <input 
-                  id="username"
-                  type="text" 
-                  placeholder='Enter your username' 
-                  value={username} 
-                  onChange={(e)=>setUsername(e.target.value)}
-                  className="register-input"
-                /> 
-                
-                <label>Password</label>
-                <input 
-                  id="password"
-                  value={password} 
-                  onChange={(e)=>setPassword(e.target.value)} 
-                  type="password" 
-                  placeholder='Enter your password'
-                  className="register-input"
-                />
-                
-                <button type='submit' className="register-btn">Submit</button>
-                
-                <p className="register-link">
-                  Already have an account? <Link href="/login">Login here</Link>
-                </p>
+  };
+
+  return (
+    <div className="page">
+      <div className="card">
+        <h1 className="title">Create Account</h1>
+        <p className="subtitle">Join our AI platform in a few seconds</p>
+
+        <form onSubmit={Register} className="form">
+
+          <label>Username</label>
+          <input
+            type="text"
+            placeholder="Enter a username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <label>Password</label>
+          <input
+            type="password"
+            placeholder="Create a password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button type="submit">Register</button>
+
+          {error && <p className="error">{error}</p>}
         </form>
 
-        <style jsx>{`
-          .register-container {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-          }
+        <p className="bottom-text">
+          Already have an account?
+          <Link href="/login"> Login</Link>
+        </p>
+      </div>
 
-          .register-form {
-            width: 100%;
-            max-width: 400px;
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-          }
+      <style jsx>{`
+        .page {
+          min-height: 100vh;
+          background: #f5f5f7;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 20px;
+          animation: fadeIn 0.6s ease;
+        }
 
-          h1 {
-            text-align: center;
-            color: #2d3748;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-          }
+        .card {
+          width: 100%;
+          max-width: 420px;
+          background: white;
+          padding: 40px;
+          border-radius: 22px;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+          border: 1px solid #e5e7eb;
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+          animation: slideUp 0.6s ease;
+        }
 
-          label {
-            font-weight: 600;
-            color: #4a5568;
-            margin-bottom: 5px;
-            display: block;
-          }
+        .title {
+          font-size: 2rem;
+          font-weight: 750;
+          text-align: center;
+          color: #111827;
+        }
 
-          .register-input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 15px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-            background-color: #f7fafc;
-          }
+        .subtitle {
+          text-align: center;
+          margin-top: -8px;
+          color: #6b7280;
+          font-size: 0.95rem;
+          margin-bottom: 10px;
+        }
 
-          .register-input:focus {
-            border-color: #667eea;
-            background-color: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            outline: none;
-          }
+        label {
+          font-size: 0.9rem;
+          font-weight: 500;
+          color: #374151;
+          margin-top: 4px;
+        }
 
-          .register-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 10px;
-          }
+        input {
+          width: 100%;
+          padding: 12px;
+          font-size: 15px;
+          border: 1px solid #d1d5db;
+          border-radius: 10px;
+          background: #f9fafb;
+          transition: 0.2s;
+        }
 
-          .register-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-          }
+        input:focus {
+          border-color: #2563eb;
+          background: white;
+          box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+          outline: none;
+        }
 
-          .register-btn:active {
+        button {
+          width: 100%;
+          padding: 12px;
+          margin-top: 8px;
+          background: #111827;
+          color: white;
+          font-size: 1rem;
+          font-weight: 600;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: 0.2s ease;
+          box-shadow: 0 10px 24px rgba(17, 24, 39, 0.2);
+        }
+
+        button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 16px 28px rgba(17, 24, 39, 0.3);
+        }
+
+        .error {
+          background: #fde2e4;
+          color: #b91c1c;
+          font-weight: 600;
+          border-radius: 10px;
+          padding: 10px;
+          text-align: center;
+          border: 1px solid #fecaca;
+          margin-top: 10px;
+        }
+
+        .bottom-text {
+          text-align: center;
+          color: #374151;
+          font-size: 0.9rem;
+          margin-top: 10px;
+        }
+
+        .bottom-text a {
+          color: #2563eb;
+          margin-left: 5px;
+          font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: scale(0.98);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes slideUp {
+          from {
+            transform: translateY(18px);
+            opacity: 0;
+          }
+          to {
             transform: translateY(0);
+            opacity: 1;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .card {
+            padding: 28px;
           }
 
-          .register-link {
-            text-align: center;
-            font-size: 14px;
-            color: #4a5568;
-            margin-top: 15px;
+          .title {
+            font-size: 1.7rem;
           }
-
-          .register-link a {
-            color: #667eea;
-            font-weight: 600;
-            transition: color 0.3s ease;
-          }
-
-          .register-link a:hover {
-            color: #764ba2;
-            text-decoration: underline;
-          }
-
-          @media (max-width: 480px) {
-            .register-form {
-              padding: 30px 20px;
-            }
-
-            h1 {
-              font-size: 1.5rem;
-            }
-          }
-        `}</style>
+        }
+      `}</style>
     </div>
-  )
+  );
 }
-
-export default page

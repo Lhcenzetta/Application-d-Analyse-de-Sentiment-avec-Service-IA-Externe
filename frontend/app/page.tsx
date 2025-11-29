@@ -2,11 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const HomePage = () => {
   return (
     <div className="page">
-      {/* TOP NAV BAR */}
+      {/* NAVBAR */}
       <header className="navbar">
         <div className="brand">
           <span className="brand-mark">SA</span>
@@ -19,33 +20,34 @@ const HomePage = () => {
         </nav>
       </header>
 
-      {/* MAIN CONTENT GRID */}
+      {/* MAIN LAYOUT */}
       <main className="layout">
-        {/* LEFT – HERO */}
+        {/* HERO SECTION */}
         <section className="hero">
           <h1 className="hero-title">
-            Analyze text sentiment with
-            <span className="hero-highlight"> clarity & simplicity.</span>
+            Understand emotions behind text,
+            <span className="hero-highlight"> instantly & intelligently.</span>
           </h1>
 
           <p className="hero-subtitle">
-            A modern and secure AI-powered platform built with FastAPI, Hugging Face,
-            and Next.js to instantly detect emotion in your text.
+            A clean, modern, AI-powered sentiment analysis platform built with FastAPI,
+            Hugging Face, and Next.js.
           </p>
 
           <p className="hero-text">
-            This project uses the multilingual model 
-            <strong> nlptown/bert-base-multilingual-uncased-sentiment </strong>
-            to return a score from <strong>1 to 5</strong>.  
-            Fully secured (JWT), containerized (Docker), and designed with a clean UX philosophy.
+            This project is part of the <strong>Simplon Network AI & Full-Stack Journey</strong>,
+            created to demonstrate mastery of backend security (JWT), external AI integration,
+            and professional frontend design.
           </p>
 
           <details className="details">
-            <summary>More technical info</summary>
+            <summary>Technical details</summary>
             <p>
-              FastAPI receives the request, checks authentication (JWT), and sends the
-              text payload to Hugging Face inference API. Results are normalized and returned
-              instantly. Frontend is lightweight, responsive, and production-ready.
+              Data flows through a secure <strong>FastAPI + JWT</strong> backend, where the message
+              is sent to the Hugging Face model
+              <strong> nlptown/bert-base-multilingual-uncased-sentiment</strong>.
+              The result is normalized and returned to the Next.js frontend.
+              Everything is Dockerized for production-ready deployment.
             </p>
           </details>
 
@@ -55,7 +57,7 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* RIGHT – PROFILE */}
+        {/* PROFILE CARD */}
         <aside className="side">
           <section className="card profile-card">
             <div className="avatar-row">
@@ -67,8 +69,8 @@ const HomePage = () => {
             </div>
 
             <p className="profile-text">
-              I create solutions that mix scalable backend systems, clean frontends,
-              and machine learning to solve real-world problems with elegance.
+              Passionate about building powerful, secure backend systems and elegant frontends,
+              while integrating real-world machine learning solutions.
             </p>
 
             <div className="tags">
@@ -77,54 +79,97 @@ const HomePage = () => {
               <span>Docker</span>
               <span>Hugging Face</span>
             </div>
+
+            <div className="socials">
+              <a href="https://github.com/Lhcenzetta" target="_blank">GitHub</a>
+              <a href="https://www.linkedin.com/feed/" target="_blank">LinkedIn</a>
+            </div>
           </section>
 
+          {/* STACK CARD */}
           <section className="card stack-card">
             <h3 className="card-title">Tech Stack</h3>
             <ul className="stack-list">
-              <li>⚙️ FastAPI (JWT authentication)</li>
-              <li>📦 Docker containerization</li>
-              <li>🧠 Hugging Face Sentiment Model</li>
-              <li>🖥️ Next.js modern UI</li>
+              <li>⚙️ FastAPI (JWT-authenticated API)</li>
+              <li>📦 Dockerized backend & frontend</li>
+              <li>🧠 Hugging Face sentiment model</li>
+              <li>🖥️ Next.js professional UI</li>
             </ul>
           </section>
         </aside>
       </main>
 
-      {/* IMAGE SHOWCASE SECTION */}
+      {/* HOW IT WORKS SECTION */}
+      <section className="steps-section">
+        <h2 className="steps-title">How It Works</h2>
+
+        <div className="steps-grid">
+          <div className="step-card">
+            <div className="step-number">1</div>
+            <h3>Enter your text</h3>
+            <p>You write any sentence, review, message, or content you want to analyze.</p>
+          </div>
+
+          <div className="step-card">
+            <div className="step-number">2</div>
+            <h3>FastAPI processes it securely</h3>
+            <p>The request is authenticated with JWT to ensure only authorized users access it.</p>
+          </div>
+
+          <div className="step-card">
+            <div className="step-number">3</div>
+            <h3>AI model evaluates sentiment</h3>
+            <p>The Hugging Face model returns a score from 1 (very negative) to 5 (very positive).</p>
+          </div>
+        </div>
+      </section>
+
+      {/* PROJECT IMAGE SHOWCASE */}
       <section className="image-section">
         <h2 className="image-title">Project Showcase</h2>
         <p className="image-subtitle">
-          Screenshot of the sentiment analysis interface built with Next.js.
+          A preview of the clean and modern Next.js interface.
         </p>
 
         <div className="image-wrapper">
-          <img
-            src="/Users/lait-zet/Desktop/The Briefs/Application-d-Analyse-de-Sentiment-avec-Service-IA-Externe/frontend/public/image.png" 
-            alt="Sentiment Analysis App"
+          <Image
+            src="/image.png"
+            alt="Sentiment Analysis UI"
             className="project-image"
+            width={1478}
+            height={818}
+            priority
           />
         </div>
       </section>
 
+      {/* SIMPLON DEDICATION SECTION */}
+      <section className="simplon-section">
+        <p>
+          Built proudly as part of the  
+          <strong> Simplon Network AI & Full-Stack Training Journey</strong>.
+        </p>
+      </section>
+
+      {/* FOOTER */}
       <footer className="footer">
-        <p>© {new Date().getFullYear()} Sentiment Analysis — All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Sentiment Analysis — Built by Lahcen Ait Zetta.</p>
       </footer>
 
+      {/* STYLES */}
       <style jsx>{`
         .page {
           min-height: 100vh;
           background: #f5f5f7;
-          font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-            "Segoe UI", sans-serif;
           padding: 24px 32px 60px;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont,
+            "SF Pro Text", "Segoe UI", sans-serif;
           color: #0f172a;
         }
 
         /* NAVBAR */
         .navbar {
           display: flex;
-          align-items: center;
           justify-content: space-between;
           margin-bottom: 40px;
         }
@@ -138,63 +183,62 @@ const HomePage = () => {
         .brand-mark {
           width: 36px;
           height: 36px;
-          border-radius: 10px;
           background: #111827;
           color: white;
-          font-weight: 700;
+          border-radius: 10px;
           display: flex;
-          justify-content: center;
           align-items: center;
+          justify-content: center;
+          font-weight: 700;
         }
 
         .brand-name {
           font-weight: 600;
           font-size: 1rem;
-          color: #111827;
         }
 
         .nav-links {
           display: flex;
+          gap: 20px;
           align-items: center;
-          gap: 18px;
         }
 
         .nav-links a {
-          text-decoration: none;
           color: #4b5563;
-          font-size: 0.9rem;
+          text-decoration: none;
         }
 
         .nav-cta {
           padding: 8px 16px;
-          border-radius: 999px;
           background: #111827;
           color: white !important;
+          border-radius: 999px;
           font-weight: 500;
         }
 
-        /* LAYOUT GRID */
+        /* MAIN GRID */
         .layout {
           display: grid;
           grid-template-columns: 1.6fr 1fr;
           gap: 40px;
-          margin-bottom: 60px;
+          margin-bottom: 64px;
         }
 
         /* HERO */
         .hero {
-          background: #ffffff;
-          padding: 40px;
+          background: white;
+          padding: 48px;
           border-radius: 28px;
-          box-shadow: 0 20px 50px rgba(15,23,42,0.08);
           border: 1px solid #e5e7eb;
+          box-shadow: 0 20px 50px rgba(0,0,0,0.07);
+          animation: fadeIn 0.7s ease forwards;
         }
 
         .hero-title {
-          font-size: 2.8rem;
+          font-size: 2.9rem;
           font-weight: 750;
-          margin-bottom: 12px;
           letter-spacing: -0.03em;
+          margin-bottom: 12px;
         }
 
         .hero-highlight {
@@ -203,16 +247,15 @@ const HomePage = () => {
 
         .hero-subtitle {
           color: #4b5563;
+          margin-bottom: 18px;
           font-size: 1.1rem;
-          margin-bottom: 20px;
           line-height: 1.4;
         }
 
         .hero-text {
           color: #4b5563;
+          margin-bottom: 16px;
           line-height: 1.7;
-          margin-bottom: 15px;
-          font-size: 1rem;
         }
 
         .details summary {
@@ -222,9 +265,9 @@ const HomePage = () => {
         }
 
         .hero-actions {
-          margin-top: 28px;
+          margin-top: 30px;
           display: flex;
-          gap: 14px;
+          gap: 16px;
         }
 
         /* BUTTONS */
@@ -233,21 +276,19 @@ const HomePage = () => {
           border-radius: 999px;
           text-decoration: none;
           font-weight: 600;
-          font-size: 1rem;
         }
 
         .primary {
           background: #111827;
-          color: white;
+          color: #ffffff;
         }
 
         .secondary {
           background: white;
-          color: #111827;
           border: 1px solid #d1d5db;
         }
 
-        /* SIDE PROFILE SECTION */
+        /* PROFILE SIDE */
         .side {
           display: flex;
           flex-direction: column;
@@ -259,7 +300,7 @@ const HomePage = () => {
           padding: 28px;
           border-radius: 22px;
           border: 1px solid #e5e7eb;
-          box-shadow: 0 18px 45px rgba(0,0,0,0.05);
+          box-shadow: 0 18px 35px rgba(0,0,0,0.05);
         }
 
         .avatar-circle {
@@ -268,51 +309,141 @@ const HomePage = () => {
           background: #111827;
           color: white;
           border-radius: 999px;
-          font-weight: 600;
           display: flex;
-          justify-content: center;
           align-items: center;
+          justify-content: center;
+          font-weight: 700;
         }
 
-        /* IMAGE SHOWCASE */
-        .image-section {
+        .profile-text {
+          margin-top: 12px;
+          color: #4b5563;
+        }
+
+        .tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-top: 12px;
+        }
+
+        .tags span {
+          padding: 4px 12px;
+          background: #f3f4f6;
+          border-radius: 999px;
+          font-size: 0.85rem;
+          color: #374151;
+        }
+
+        .socials {
+          margin-top: 14px;
+          display: flex;
+          gap: 14px;
+        }
+
+        .socials a {
+          font-size: 0.9rem;
+          text-decoration: none;
+          color: #2563eb;
+        }
+
+        /* HOW IT WORKS */
+        .steps-section {
+          margin-top: 60px;
+          margin-bottom: 40px;
           text-align: center;
-          margin-top: 40px;
+        }
+
+        .steps-title {
+          font-size: 2rem;
+          font-weight: 700;
+          margin-bottom: 28px;
+        }
+
+        .steps-grid {
+          display: flex;
+          gap: 24px;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .step-card {
+          background: white;
+          padding: 28px;
+          border-radius: 22px;
+          border: 1px solid #e5e7eb;
+          width: 260px;
+          box-shadow: 0 14px 30px rgba(0,0,0,0.05);
+          text-align: left;
+          animation: fadeInUp 0.8s ease;
+        }
+
+        .step-number {
+          width: 38px;
+          height: 38px;
+          border-radius: 999px;
+          background: #111827;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          margin-bottom: 10px;
+        }
+
+        /* IMAGE SECTION */
+        .image-section {
+          margin-top: 80px;
+          text-align: center;
         }
 
         .image-title {
           font-size: 2rem;
           font-weight: 700;
-          margin-bottom: 4px;
         }
 
         .image-subtitle {
           color: #6b7280;
-          margin-bottom: 24px;
-          font-size: 0.95rem;
+          margin-bottom: 20px;
         }
 
         .image-wrapper {
           max-width: 900px;
           margin: 0 auto;
-          padding: 0 20px;
         }
 
         .project-image {
           width: 100%;
           border-radius: 20px;
-          box-shadow: 
-            0 10px 25px rgba(0,0,0,0.08),
-            0 4px 15px rgba(0,0,0,0.06);
+          box-shadow: 0 18px 45px rgba(0,0,0,0.1);
           border: 1px solid #e5e7eb;
+        }
+
+        /* SIMPLON SECTION */
+        .simplon-section {
+          text-align: center;
+          margin-top: 50px;
+          font-size: 1rem;
+          color: #374151;
         }
 
         /* FOOTER */
         .footer {
           text-align: center;
-          margin-top: 50px;
+          margin-top: 40px;
           color: #6b7280;
           font-size: 0.85rem;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px);}
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(30px);}
+          to { opacity: 1; transform: translateY(0);}
         }
 
         @media (max-width: 900px) {

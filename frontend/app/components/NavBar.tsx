@@ -1,19 +1,17 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
 export default function NavBar() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [logged, setLogged] = useState(false);
+  const [logged, setLogged] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return Boolean(localStorage.getItem("token"));
+  });
   const pathname = usePathname();
-
-  useEffect(() => {
-    const token = typeof window !== "undefined" && localStorage.getItem("token");
-    setLogged(Boolean(token));
-  }, []);
 
   const handleLogout = () => {
     if (typeof window !== "undefined") {
