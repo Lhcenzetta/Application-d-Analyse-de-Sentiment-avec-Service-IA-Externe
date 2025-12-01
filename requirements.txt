@@ -1,0 +1,2 @@
+# Delegate to the backend dependencies
+-r Backend/requirements.txt
