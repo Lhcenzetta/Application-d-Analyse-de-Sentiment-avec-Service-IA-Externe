@@ -11,7 +11,6 @@ The project is composed of a **secure JWT-authenticated FastAPI backend**, a **m
 ---
 
 ## Table of Contents
-
 - [Features](#features)
 - [How It Works](#how-it-works)
 - [Tech Stack](#tech-stack)
