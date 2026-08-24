@@ -9,7 +9,6 @@ The project is composed of a **secure JWT-authenticated FastAPI backend**, a **m
 > Built as part of the **Simplon Network AI & Full-Stack Training Journey**.
 
 ---
-
 ## Table of Contents
 - [Features](#features)
 - [How It Works](#how-it-works)
