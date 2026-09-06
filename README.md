@@ -28,7 +28,6 @@ The project is composed of a **secure JWT-authenticated FastAPI backend**, a **m
 - [License](#license)
 
 ---
-
 ## Features
 
 - 🔐 **JWT authentication** — register / login / protected prediction endpoint (`HS256` with `python-jose`).
