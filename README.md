@@ -5,9 +5,7 @@
 A full-stack sentiment analysis platform that sends text to the Hugging Face API and returns a score from **1 to 5** using the multilingual model [`nlptown/bert-base-multilingual-uncased-sentiment`](https://huggingface.co/nlptown/bert-base-multilingual-uncased-sentiment).
 
 The project is composed of a **secure JWT-authenticated FastAPI backend**, a **modern Next.js frontend**, and is fully **containerized with Docker**, tested with **pytest**, and validated with **GitHub Actions CI**.
-
 > Built as part of the **Simplon Network AI & Full-Stack Training Journey**.
-
 ---
 ## Table of Contents
 - [Features](#features)
